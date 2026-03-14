@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: pkg-db-contracts
+Version: 0.1.0
+Summary: Shared SQLAlchemy ORM contracts and migrations for internal services
+Author: Platform Team
+License: Proprietary
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: SQLAlchemy<3.0.0,>=2.0.28
+Requires-Dist: alembic<2.0.0,>=1.13.1
+Requires-Dist: psycopg[binary]<4.0.0,>=3.1.18
+Provides-Extra: dev
+Requires-Dist: pytest<9.0.0,>=8.0.0; extra == "dev"
+Requires-Dist: ruff<1.0.0,>=0.4.0; extra == "dev"
+Requires-Dist: build<2.0.0,>=1.2.1; extra == "dev"
+Requires-Dist: twine<6.0.0,>=5.0.0; extra == "dev"
+
+# pkg-db-contracts
+
+Shared database contracts package for internal services.
+
+## What this package provides
+
+- SQLAlchemy ORM model definitions grouped by schema/domain.
+- A shared declarative base with naming conventions.
+- Alembic migration configuration and scripts.
+- Optional utility helpers for engine/session creation.
+
+## Project layout
+
+- `src/db_contracts/base.py`: Declarative base + metadata naming conventions.
+- `src/db_contracts/models/*.py`: Domain model modules (`auth`, `dependency`, `analysis`, `fixgen`, `ai`).
+- `src/db_contracts/models/__init__.py`: Model import aggregator.
+- `src/db_contracts/db.py`: SQLAlchemy engine/session helpers.
+- `migrations/`: Alembic migration environment.
+
+## Local setup
+
+```bash
+python -m venv .venv
+. .venv/Scripts/activate  # Windows (PowerShell: .venv\Scripts\Activate.ps1)
+pip install -e ".[dev]"
+```
+
+## Run checks
+
+```bash
+ruff check .
+pytest
+```
+
+## Build package
+
+```bash
+python -m build
+```
+
+## Migrations
+
+Set `DATABASE_URL` then run:
+
+```bash
+alembic upgrade head
+alembic revision --autogenerate -m "describe change"
+```
+
+## Versioning
+
+Use semantic versioning.
+
+- `MAJOR`: breaking model/contract changes
+- `MINOR`: backward-compatible additions
+- `PATCH`: bug fixes
