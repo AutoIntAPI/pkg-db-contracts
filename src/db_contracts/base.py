@@ -1,5 +1,6 @@
+from sqlmodel import SQLModel, Field
+from typing import Optional
 from sqlalchemy import MetaData
-from sqlalchemy.orm import DeclarativeBase
 
 NAMING_CONVENTION = {
     "ix": "ix_%(column_0_label)s",
@@ -11,7 +12,8 @@ NAMING_CONVENTION = {
 
 
 metadata = MetaData(naming_convention=NAMING_CONVENTION)
+SQLModel.metadata = metadata
 
-
-class Base(DeclarativeBase):
-    metadata = metadata
+class BaseDBModel(SQLModel):
+    """Base class for all database models."""
+    id: Optional[int] = Field(default=None, primary_key=True)

@@ -7,15 +7,14 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from db_contracts import models as _models  # noqa: F401  # ensure all models are imported
-from db_contracts.base import Base
+from db_contracts.base import SQLModel
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-
-target_metadata = Base.metadata
+target_metadata = SQLModel.metadata
 
 
 def get_database_url() -> str:
