@@ -54,3 +54,13 @@ Use semantic versioning.
 - `MAJOR`: breaking model/contract changes
 - `MINOR`: backward-compatible additions
 - `PATCH`: bug fixes
+
+## Installation
+
+```bash
+# In terminal, set GITHUB_TOKEN env variable with appropriate permissions
+pip install git+https://${GITHUB_TOKEN}@github.com/AutoIntAPI/pkg-db-contracts.git
+
+# or in requirements.txt
+db-contract @ git+https://${GITHUB_TOKEN}@github.com/AutoIntAPI/pkg-db-contracts.git
+```
