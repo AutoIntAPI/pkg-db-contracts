@@ -6,7 +6,6 @@ from db_contracts.base import BaseDBModel
 
 class Change(BaseDBModel, table=True):
     __tablename__ = "changes"
-    id: Optional[int] = Field(default=None, primary_key=True)
     commit_id: str
     description: Optional[str] = None
     type_of_change: Optional[str] = None

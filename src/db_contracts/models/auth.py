@@ -8,14 +8,12 @@ from db_contracts.base import BaseDBModel
 class Organization(BaseDBModel, table=True):
     __tablename__ = "organizations"
     
-    id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     repositories: list["Repository"] = Relationship(back_populates="organization")
 
 class Repository(BaseDBModel, table=True):
     __tablename__ = "repositories"
     
-    id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     url: str
     organization_id: int = Field(foreign_key="organizations.id")

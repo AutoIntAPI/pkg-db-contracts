@@ -12,7 +12,6 @@ class AITask(BaseDBModel, table=True):
     
     model_config = ConfigDict(arbitrary_types_allowed=True)
     
-    id: Optional[int] = Field(default=None, primary_key=True)
     task_id: str = Field(unique=True, index=True)  # from AI provider
     service_name: str  # which service being analyzed
     model_name: str  # AI model used

@@ -10,7 +10,6 @@ from db_contracts.base import BaseDBModel
 
 class Service(BaseDBModel, table=True):
     __tablename__ = "services"
-    id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     language: Optional[str] = None
     commit_id: Optional[str] = None
@@ -32,7 +31,6 @@ class API(BaseDBModel, table=True):
     
     model_config = ConfigDict(arbitrary_types_allowed=True)
     
-    id: Optional[int] = Field(default=None, primary_key=True)
     method: str
     path: str  # Endpoint path like "/api/users/{id}"
     file_path: str
@@ -47,7 +45,6 @@ class API(BaseDBModel, table=True):
 
 class APICall(BaseDBModel, table=True):
     __tablename__ = "api_calls"
-    id: Optional[int] = Field(default=None, primary_key=True)
     file_path: str
     line_number: int
     commit_id: str
