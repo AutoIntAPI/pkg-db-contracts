@@ -3,11 +3,11 @@ requires = ["setuptools>=69.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pkg-db-contracts"
+name = "db-contract"
 version = "0.1.0"
 description = "Shared SQLModel ORM contracts and migrations for internal services"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 authors = [
   { name = "Platform Team" }
 ]
