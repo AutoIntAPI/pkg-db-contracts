@@ -55,7 +55,7 @@ class Notification(BaseDBModel, table=True):
     __tablename__ = "notifications"
     
     message: str
-    impact_analysis_id: UUID = Field(foreign_key="impact_analyses.id")
+    impact_analysis_id: UUID = Field(foreign_key="impact_analysis.id")
     impact_analysis: Optional["ImpactAnalysis"] = Relationship(back_populates="notifications")
     api_change_id: UUID = Field(foreign_key="api_changes.id")
     api_change: Optional["APIChange"] = Relationship(back_populates="notifications")

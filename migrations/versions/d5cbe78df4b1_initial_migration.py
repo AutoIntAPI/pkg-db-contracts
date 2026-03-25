@@ -1,19 +1,19 @@
 """initial migration
 
-Revision ID: 1eb2146609be
+Revision ID: d5cbe78df4b1
 Revises: 
-Create Date: 2026-03-25 15:25:06.109284
+Create Date: 2026-03-25 16:48:43.122122
 """
 
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
 import sqlmodel
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '1eb2146609be'
+revision: str = 'd5cbe78df4b1'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -147,24 +147,24 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id', name=op.f('pk_api_changes'))
     )
     op.create_index(op.f('ix_api_changes_id'), 'api_changes', ['id'], unique=False)
-    op.create_table('impact_analyses',
+    op.create_table('impact_analysis',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('severity', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('summary', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('api_change_id', sa.Uuid(), nullable=False),
-    sa.ForeignKeyConstraint(['api_change_id'], ['api_changes.id'], name=op.f('fk_impact_analyses_api_change_id_api_changes')),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_impact_analyses'))
+    sa.ForeignKeyConstraint(['api_change_id'], ['api_changes.id'], name=op.f('fk_impact_analysis_api_change_id_api_changes')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_impact_analysis'))
     )
-    op.create_index(op.f('ix_impact_analyses_id'), 'impact_analyses', ['id'], unique=False)
+    op.create_index(op.f('ix_impact_analysis_id'), 'impact_analysis', ['id'], unique=False)
     op.create_table('impact_analysis_services',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('service_id', sa.Uuid(), nullable=False),
     sa.Column('impact_analysis_id', sa.Uuid(), nullable=False),
-    sa.ForeignKeyConstraint(['impact_analysis_id'], ['impact_analyses.id'], name=op.f('fk_impact_analysis_services_impact_analysis_id_impact_analyses')),
+    sa.ForeignKeyConstraint(['impact_analysis_id'], ['impact_analysis.id'], name=op.f('fk_impact_analysis_services_impact_analysis_id_impact_analysis')),
     sa.ForeignKeyConstraint(['service_id'], ['services.id'], name=op.f('fk_impact_analysis_services_service_id_services')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_impact_analysis_services'))
     )
@@ -182,7 +182,7 @@ def upgrade() -> None:
     sa.Column('sent_at', sa.DateTime(), nullable=True),
     sa.Column('error_message', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.ForeignKeyConstraint(['api_change_id'], ['api_changes.id'], name=op.f('fk_notifications_api_change_id_api_changes')),
-    sa.ForeignKeyConstraint(['impact_analysis_id'], ['impact_analyses.id'], name=op.f('fk_notifications_impact_analysis_id_impact_analyses')),
+    sa.ForeignKeyConstraint(['impact_analysis_id'], ['impact_analysis.id'], name=op.f('fk_notifications_impact_analysis_id_impact_analysis')),
     sa.ForeignKeyConstraint(['recipient_id'], ['users.id'], name=op.f('fk_notifications_recipient_id_users')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_notifications'))
     )
@@ -196,8 +196,8 @@ def downgrade() -> None:
     op.drop_table('notifications')
     op.drop_index(op.f('ix_impact_analysis_services_id'), table_name='impact_analysis_services')
     op.drop_table('impact_analysis_services')
-    op.drop_index(op.f('ix_impact_analyses_id'), table_name='impact_analyses')
-    op.drop_table('impact_analyses')
+    op.drop_index(op.f('ix_impact_analysis_id'), table_name='impact_analysis')
+    op.drop_table('impact_analysis')
     op.drop_index(op.f('ix_api_changes_id'), table_name='api_changes')
     op.drop_table('api_changes')
     op.drop_index(op.f('ix_api_calls_id'), table_name='api_calls')

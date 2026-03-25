@@ -10,10 +10,6 @@ from .dependency import *
 __all__ = [
     "API",
     "APICall",
-    # "ApiSchema",
-    # "AnalysisRun",
-    # "BreakingChange",
-    # "FixSuggestion",
     "AITask",
     "Organization",
     "Project",
@@ -21,6 +17,8 @@ __all__ = [
     "Service",
     "User",
     "UserProject",
-    # "UserOrganization",
     "APIChange",
+    "ImpactAnalysis",
+    "ImpactAnalysisService",
+    "Notification",
 ]
