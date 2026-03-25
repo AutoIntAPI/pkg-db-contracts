@@ -16,9 +16,11 @@ __all__ = [
     # "FixSuggestion",
     "AITask",
     "Organization",
+    "Project",
     "Repository",
     "Service",
     "User",
+    "UserProject",
     # "UserOrganization",
-    "Change",
+    "APIChange",
 ]

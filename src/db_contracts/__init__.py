@@ -1,5 +1,5 @@
 """Shared database contracts package."""
 
-from .base import Base
+from .base import BaseDBModel
 
-__all__ = ["Base"]
+__all__ = ["BaseDBModel"]

@@ -1,4 +1,3 @@
-from db_contracts.models import *  # noqa: F403
 from sqlmodel import SQLModel, Field, Relationship, Column
 from typing import Optional, Any
 from sqlalchemy.dialects.postgresql import JSONB
