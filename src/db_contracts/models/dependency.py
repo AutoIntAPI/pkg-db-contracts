@@ -7,7 +7,7 @@ from uuid import UUID
 
 if TYPE_CHECKING:
     from .auth import Repository
-    from .analysis import APIChange
+    from .analysis import APIChange, ImpactAnalysis, ImpactAnalysisService
 
 class Service(BaseDBModel, table=True):
     __tablename__ = "services"
@@ -26,6 +26,7 @@ class Service(BaseDBModel, table=True):
         back_populates="to_service",
         sa_relationship_kwargs={"foreign_keys": "api_calls.c.service_to_id"}
     )
+    impact_analysis: list["ImpactAnalysisService"] = Relationship(back_populates="service")
 
 class API(BaseDBModel, table=True):
     __tablename__ = "apis"
