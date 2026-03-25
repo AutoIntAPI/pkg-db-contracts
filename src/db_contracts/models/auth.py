@@ -14,6 +14,7 @@ class Organization(BaseDBModel, table=True):
     
     name: str
     projects: list["Project"] = Relationship(back_populates="organization")
+    users: list["User"] = Relationship(back_populates="organization")
 
 class Project(BaseDBModel, table=True):
     __tablename__ = "projects"
@@ -44,6 +45,7 @@ class User(BaseDBModel, table=True):
     role: Optional[str] = None  # e.g., "admin", "developer",
     organization_id: UUID = Field(foreign_key="organizations.id")
     organization: Optional[Organization] = Relationship(back_populates="users")
+    notifications: list["Notification"] = Relationship(back_populates="recipient")
 
 class UserProject(SQLModel, table=True):
     __tablename__ = "user_projects"

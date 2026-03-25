@@ -5,6 +5,7 @@ from uuid import UUID
 
 if TYPE_CHECKING:
     from .dependency import Service, API
+    from .auth import Notification
 
 class APIChange(BaseDBModel, table=True):
     __tablename__ = "api_changes"
@@ -15,6 +16,7 @@ class APIChange(BaseDBModel, table=True):
     api_id: UUID = Field(foreign_key="apis.id")
     api: Optional["API"] = Relationship(back_populates="changes")
     impact_analysis: Optional["ImpactAnalysis"] = Relationship(back_populates="api_change")
+    notifications: list["Notification"] = Relationship(back_populates="api_change")
 
 class ImpactAnalysis(BaseDBModel, table=True):
     __tablename__ = "impact_analysis"
@@ -22,6 +24,8 @@ class ImpactAnalysis(BaseDBModel, table=True):
     summary: Optional[str] = None
     api_change_id: UUID = Field(foreign_key="api_changes.id")
     api_change: Optional["APIChange"] = Relationship(back_populates="impact_analysis")
+    affected_services: list["ImpactAnalysisService"] = Relationship(back_populates="impact_analysis")
+    notifications: list["Notification"] = Relationship(back_populates="impact_analysis")
 
 class ImpactAnalysisService(BaseDBModel, table=True):
     __tablename__ = "impact_analysis_services"
