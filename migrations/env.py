@@ -8,6 +8,8 @@ from sqlalchemy import engine_from_config, pool
 
 from db_contracts import models as _models  # noqa: F401  # ensure all models are imported
 from db_contracts.base import SQLModel
+from dotenv import load_dotenv
+load_dotenv()
 
 config = context.config
 
