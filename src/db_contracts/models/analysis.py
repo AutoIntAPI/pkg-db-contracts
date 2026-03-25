@@ -14,6 +14,7 @@ class APIChange(BaseDBModel, table=True):
     change_degree: Optional[str] = None
     api_id: UUID = Field(foreign_key="apis.id")
     api: Optional["API"] = Relationship(back_populates="changes")
+    impact_analysis: Optional["ImpactAnalysis"] = Relationship(back_populates="api_change")
 
 class ImpactAnalysis(BaseDBModel, table=True):
     __tablename__ = "impact_analysis"
