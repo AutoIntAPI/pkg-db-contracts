@@ -20,11 +20,11 @@ class Service(BaseDBModel, table=True):
     apis: list["API"] = Relationship(back_populates="service")
     api_calls_from: list["APICall"] = Relationship(
         back_populates="service_from",
-        sa_relationship_kwargs={"foreign_keys": "api_calls.c.service_from_id"}
+        sa_relationship_kwargs={"foreign_keys": "APICall.service_from_id"}
     )
     api_calls_to: list["APICall"] = Relationship(
         back_populates="service_to",
-        sa_relationship_kwargs={"foreign_keys": "api_calls.c.service_to_id"}
+        sa_relationship_kwargs={"foreign_keys": "APICall.service_to_id"}
     )
     impact_analysis: list["ImpactAnalysisService"] = Relationship(back_populates="service")
 
@@ -57,9 +57,9 @@ class APICall(BaseDBModel, table=True):
     
     service_from: Optional["Service"] = Relationship(
         back_populates="api_calls_from",
-        sa_relationship_kwargs={"foreign_keys": "api_calls.c.service_from_id"}
+        sa_relationship_kwargs={"foreign_keys": "APICall.service_from_id"}
     )
     service_to: Optional["Service"] = Relationship(
         back_populates="api_calls_to",
-        sa_relationship_kwargs={"foreign_keys": "api_calls.c.service_to_id"}
+        sa_relationship_kwargs={"foreign_keys": "APICall.service_to_id"}
     )
