@@ -1,22 +1,24 @@
 """Import all models so metadata is fully populated for migrations."""
 
-from .ai import LlmTask
-from .analysis import AnalysisRun, BreakingChange
-from .auth import Organization, Repo, User, UserOrganization
-from .dependency import Api, ApiCall, ApiSchema, Service
-from .fixgen import FixSuggestion
+from .ai import *
+from .analysis import *
+from .auth import *
+from .dependency import *
+# from .fixgen import FixSuggestion
+
 
 __all__ = [
-    "Api",
-    "ApiCall",
-    "ApiSchema",
-    "AnalysisRun",
-    "BreakingChange",
-    "FixSuggestion",
-    "LlmTask",
+    "API",
+    "APICall",
+    "AITask",
     "Organization",
-    "Repo",
+    "Project",
+    "Repository",
     "Service",
     "User",
-    "UserOrganization",
+    "UserProject",
+    "APIChange",
+    "ImpactAnalysis",
+    "ImpactAnalysisService",
+    "Notification",
 ]
