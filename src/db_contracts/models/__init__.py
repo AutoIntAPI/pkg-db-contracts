@@ -2,23 +2,19 @@
 
 from .ai import *
 from .analysis import *
-from .auth import *
 from .dependency import *
-# from .fixgen import FixSuggestion
 
 
 __all__ = [
-    "API",
-    "APICall",
     "AITask",
-    "Organization",
-    "Project",
     "Repository",
     "Service",
-    "User",
-    "UserProject",
+    "API",
+    "APICall",
+    "PullRequest",
+    "ServiceChange",
     "APIChange",
+    "APICallChange",
     "ImpactAnalysis",
     "ImpactAnalysisService",
-    "Notification",
 ]
