@@ -6,8 +6,17 @@ from db_contracts.base import BaseDBModel
 from uuid import UUID
 
 if TYPE_CHECKING:
-    from .auth import Repository
-    from .analysis import APIChange, ImpactAnalysis, ImpactAnalysisService
+    from .analysis import PullRequest, ServiceChange, APIChange, APICallChange, ImpactAnalysis, ImpactAnalysisService
+
+class Repository(BaseDBModel, table=True):
+    __tablename__ = "repositories"
+
+    name: str
+    url: str
+    default_branch: Optional[str] = None
+
+    services: list["Service"] = Relationship(back_populates="repository")
+    pr_list: list["PullRequest"] = Relationship(back_populates="repository")
 
 class Service(BaseDBModel, table=True):
     __tablename__ = "services"
@@ -27,6 +36,7 @@ class Service(BaseDBModel, table=True):
         sa_relationship_kwargs={"foreign_keys": "APICall.service_to_id"}
     )
     impact_analysis: list["ImpactAnalysisService"] = Relationship(back_populates="service")
+    changes: list["ServiceChange"] = Relationship(back_populates="source_service")
 
 class API(BaseDBModel, table=True):
     __tablename__ = "apis"
@@ -42,8 +52,9 @@ class API(BaseDBModel, table=True):
     version: Optional[str] = None
     service_id: UUID = Field(foreign_key="services.id")
     service: Optional["Service"] = Relationship(back_populates="apis")
-    changes: list["APIChange"] = Relationship(back_populates="api")
+    changes: list["APIChange"] = Relationship(back_populates="source_api")
     api_calls: list["APICall"] = Relationship(back_populates="api")
+    # snapshots: list["APISnapshot"] = Relationship(back_populates="source_api")
 
 class APICall(BaseDBModel, table=True):
     __tablename__ = "api_calls"
@@ -63,3 +74,4 @@ class APICall(BaseDBModel, table=True):
         back_populates="api_calls_to",
         sa_relationship_kwargs={"foreign_keys": "APICall.service_to_id"}
     )
+    changes: list["APICallChange"] = Relationship(back_populates="source_api_call")
