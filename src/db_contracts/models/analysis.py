@@ -1,9 +1,10 @@
-from sqlmodel import Field, Relationship, Column
+from sqlmodel import Field, Relationship, Column, ARRAY, TEXT
 from typing import Optional, TYPE_CHECKING
 from db_contracts.base import BaseDBModel
 from uuid import UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from pydantic import ConfigDict
+from .enums import ValidationStatus, ValidationDecision, FinalOutcome
 
 if TYPE_CHECKING:
     from .dependency import Repository, Service, API, APICall
@@ -25,6 +26,7 @@ class PullRequest(BaseDBModel, table=True):
     api_changes: list["APIChange"] = Relationship(back_populates="pr")
     api_call_changes: list["APICallChange"] = Relationship(back_populates="pr")
 
+    fix_records: list["FixRecord"] = Relationship(back_populates="pr")
 
 class ServiceChange(BaseDBModel, table=True):
     __tablename__ = "service_changes"
@@ -75,7 +77,6 @@ class APIChange(BaseDBModel, table=True):
     pr: Optional["PullRequest"] = Relationship(back_populates="api_changes")
     service_change: Optional["ServiceChange"] = Relationship(back_populates="api_changes")
     api_call_changes: list["APICallChange"] = Relationship(back_populates="api_change")
-    impact_analysis: Optional["ImpactAnalysis"] = Relationship(back_populates="api_change")
 
 
 class APICallChange(BaseDBModel, table=True):
@@ -104,23 +105,28 @@ class APICallChange(BaseDBModel, table=True):
     )
     api_change: Optional["APIChange"] = Relationship(back_populates="api_call_changes")
 
+class FixRecord(BaseDBModel, table=True):
+    __tablename__ = "fix_records"
+    pr_id: UUID = Field(foreign_key="pull_requests.id")
+    downstream_service_id: UUID = Field(foreign_key="services.id")
+    validation_status: ValidationStatus
+    validation_decision: ValidationDecision
+    schema_validation_passed: Optional[bool] = None
+    schema_validation_errors: Optional[list[str]] = Field(default=None, sa_column=Column(ARRAY(TEXT)))
+    static_analysis_passed: Optional[bool] = None
+    static_analysis_errors: Optional[list[str]] = Field(default=None, sa_column=Column(ARRAY(TEXT)))
+    syntax_check_passed: Optional[bool] = None
+    syntax_check_errors: Optional[list[str]] = Field(default=None, sa_column=Column(ARRAY(TEXT)))
+    confidence_score: Optional[float] = None
+    generated_patch: Optional[str] = None
+    formatted_patch: Optional[str] = None
+    patch_explanation: Optional[str] = None
+    semantic_validation_ran: bool
+    semantic_validation_passed: Optional[bool] = None
+    semantic_validation_notes: Optional[list[str]] = Field(default=None, sa_column=Column(ARRAY(TEXT)))
+    semantic_validation_score: Optional[float] = None
+    branch_name: Optional[str] = None
+    retry_count: Optional[int] = None
+    final_outcome: Optional[FinalOutcome] = None
 
-class ImpactAnalysis(BaseDBModel, table=True):
-    __tablename__ = "impact_analysis"
-
-    severity: Optional[str] = None
-    summary: Optional[str] = None
-    api_change_id: UUID = Field(foreign_key="api_changes.id")
-
-    api_change: Optional["APIChange"] = Relationship(back_populates="impact_analysis")
-    affected_services: list["ImpactAnalysisService"] = Relationship(back_populates="impact_analysis")
-
-
-class ImpactAnalysisService(BaseDBModel, table=True):
-    __tablename__ = "impact_analysis_services"
-
-    service_id: UUID = Field(foreign_key="services.id")
-    impact_analysis_id: UUID = Field(foreign_key="impact_analysis.id")
-
-    service: Optional["Service"] = Relationship(back_populates="impact_analysis")
-    impact_analysis: Optional["ImpactAnalysis"] = Relationship(back_populates="affected_services")
+    pr: Optional["PullRequest"] = Relationship(back_populates="fix_records")
