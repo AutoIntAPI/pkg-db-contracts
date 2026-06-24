@@ -8,21 +8,14 @@ from uuid import UUID
 if TYPE_CHECKING:
     from .analysis import PullRequest, ServiceChange, APIChange, APICallChange
 
-class Project(BaseDBModel, table=True):
-    __tablename__ = "projects"
-    name: str
-
-    repositories: list["Repository"] = Relationship(back_populates="project")
-
 class Repository(BaseDBModel, table=True):
     __tablename__ = "repositories"
 
     name: str
     url: str
     default_branch: Optional[str] = None
-    project_id: Optional[UUID] = Field(foreign_key="projects.id")
+    project_id: Optional[UUID]
 
-    project: Optional["Project"] = Relationship(back_populates="repositories")
     services: list["Service"] = Relationship(back_populates="repository")
     pr_list: list["PullRequest"] = Relationship(back_populates="repository")
 
