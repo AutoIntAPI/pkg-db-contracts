@@ -7,7 +7,6 @@ from .dependency import *
 
 __all__ = [
     "AITask",
-    "Project",
     "Repository",
     "Service",
     "API",
