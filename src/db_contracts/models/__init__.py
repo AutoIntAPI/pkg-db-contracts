@@ -1,6 +1,6 @@
 """Import all models so metadata is fully populated for migrations."""
 
-from .ai import *
+from .tasks_runs import *
 from .analysis import *
 from .dependency import *
 
@@ -17,4 +17,6 @@ __all__ = [
     "APIChange",
     "APICallChange",
     "FixRecord",
+    "DependencyAnalysisRun",
+    "DependencyAnalysisTaskLink",
 ]
