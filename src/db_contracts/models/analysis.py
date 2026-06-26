@@ -107,6 +107,7 @@ class APICallChange(BaseDBModel, table=True):
 
 class FixRecord(BaseDBModel, table=True):
     __tablename__ = "fix_records"
+    run_id: UUID
     pr_id: UUID = Field(foreign_key="pull_requests.id")
     downstream_service_id: UUID = Field(foreign_key="services.id")
     validation_status: ValidationStatus
