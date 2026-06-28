@@ -2,7 +2,7 @@ from sqlmodel import Field, Relationship, Column, ARRAY, TEXT
 from typing import Optional, TYPE_CHECKING
 from db_contracts.base import BaseDBModel
 from uuid import UUID
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY as PG_ARRAY, JSONB, UUID as PG_UUID
 from pydantic import ConfigDict
 from .enums import ValidationStatus, ValidationDecision, FinalOutcome
 
@@ -109,7 +109,9 @@ class FixRecord(BaseDBModel, table=True):
     __tablename__ = "fix_records"
     run_id: UUID
     pr_id: UUID = Field(foreign_key="pull_requests.id")
-    downstream_service_id: UUID = Field(foreign_key="services.id")
+    downstream_services_ids: Optional[list[UUID]] = Field(
+        default=None, sa_column=Column(PG_ARRAY(PG_UUID(as_uuid=True)))
+    )
     validation_status: ValidationStatus
     validation_decision: ValidationDecision
     schema_validation_passed: Optional[bool] = None
