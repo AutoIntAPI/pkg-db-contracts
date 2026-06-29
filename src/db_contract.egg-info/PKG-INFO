@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: db-contract
-Version: 0.1.0
+Version: 0.4.3
 Summary: Shared SQLModel ORM contracts and migrations for internal services
 Author: Platform Team
 License: Proprietary

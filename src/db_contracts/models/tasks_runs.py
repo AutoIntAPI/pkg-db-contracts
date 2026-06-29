@@ -31,7 +31,7 @@ class AITask(BaseDBModel, table=True):
 class DependencyAnalysisRun(BaseDBModel, table=True):
     __tablename__ = "dependency_analysis_runs"
 
-    analysis_run_id: str = Field(index=True, unique=True)
+    analysis_id: str = Field(index=True, unique=True)
     project_id: str = Field(index=True)
     callback_url: str
     status: str = Field(default="pending", index=True)
@@ -51,7 +51,7 @@ class DependencyAnalysisRun(BaseDBModel, table=True):
 class DependencyAnalysisTaskLink(BaseDBModel, table=True):
     __tablename__ = "dependency_analysis_task_links"
 
-    analysis_run_id: str = Field(index=True)
+    analysis_id: str = Field(index=True)
     task_id: str = Field(index=True, unique=True)
     service_name: str
     repository_url: str

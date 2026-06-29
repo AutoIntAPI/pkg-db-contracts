@@ -32,6 +32,7 @@ class ServiceChange(BaseDBModel, table=True):
     __tablename__ = "service_changes"
 
     pr_id: UUID = Field(foreign_key="pull_requests.id")
+    analysis_id: Optional[UUID] = Field(default=None, index=True)
     source_service_id: Optional[UUID] = Field(default=None, foreign_key="services.id")
     change_type: str  # added | deleted
     change_degree: Optional[str] = None  # major | minor
@@ -58,6 +59,7 @@ class APIChange(BaseDBModel, table=True):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     pr_id: UUID = Field(foreign_key="pull_requests.id")
+    analysis_id: Optional[UUID] = Field(default=None, index=True)
     service_change_id: Optional[UUID] = Field(default=None, foreign_key="service_changes.id")
     api_id: UUID = Field(foreign_key="apis.id")
     description: Optional[str] = None
@@ -83,6 +85,7 @@ class APICallChange(BaseDBModel, table=True):
     __tablename__ = "api_call_changes"
 
     pr_id: UUID = Field(foreign_key="pull_requests.id")
+    analysis_id: Optional[UUID] = Field(default=None, index=True)
     source_api_call_id: Optional[UUID] = Field(default=None, foreign_key="api_calls.id")
     service_from_change_id: Optional[UUID] = Field(default=None, foreign_key="service_changes.id")
     service_to_change_id: Optional[UUID] = Field(default=None, foreign_key="service_changes.id")
@@ -107,9 +110,11 @@ class APICallChange(BaseDBModel, table=True):
 
 class FixRecord(BaseDBModel, table=True):
     __tablename__ = "fix_records"
-    run_id: UUID
-    pr_id: UUID = Field(foreign_key="pull_requests.id")
-    downstream_services_ids: Optional[list[UUID]] = Field(
+    project_id: Optional[UUID] = Field(default=None, index=True)
+    analysis_id: Optional[UUID] = Field(default=None, index=True)
+    fix_id: UUID = Field(index=True)
+    pr_id: Optional[UUID] = Field(default=None, foreign_key="pull_requests.id")
+    downstream_service_ids: Optional[list[UUID]] = Field(
         default=None, sa_column=Column(PG_ARRAY(PG_UUID(as_uuid=True)))
     )
     validation_status: ValidationStatus

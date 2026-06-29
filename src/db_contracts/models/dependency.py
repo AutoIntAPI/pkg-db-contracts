@@ -1,9 +1,10 @@
-from sqlmodel import Field, Relationship, Column
+from sqlmodel import Field, Relationship, Column, SQLModel
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy.dialects.postgresql import JSONB
 from pydantic import ConfigDict
 from db_contracts.base import BaseDBModel
 from uuid import UUID
+from datetime import datetime, timezone
 
 if TYPE_CHECKING:
     from .analysis import PullRequest, ServiceChange, APIChange, APICallChange
@@ -14,10 +15,20 @@ class Repository(BaseDBModel, table=True):
     name: str
     url: str
     default_branch: Optional[str] = None
-    project_id: Optional[UUID]
 
     services: list["Service"] = Relationship(back_populates="repository")
     pr_list: list["PullRequest"] = Relationship(back_populates="repository")
+
+
+class ProjectRepository(SQLModel, table=True):
+    __tablename__ = "project_repositories"
+
+    project_id: UUID = Field(primary_key=True)
+    repository_id: UUID = Field(primary_key=True, foreign_key="repositories.id")
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
 
 class Service(BaseDBModel, table=True):
     __tablename__ = "services"

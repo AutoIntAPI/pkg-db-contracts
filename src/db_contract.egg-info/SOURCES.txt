@@ -10,6 +10,7 @@ src/db_contracts/__init__.py
 src/db_contracts/base.py
 src/db_contracts/db.py
 src/db_contracts/models/__init__.py
-src/db_contracts/models/ai.py
 src/db_contracts/models/analysis.py
 src/db_contracts/models/dependency.py
+src/db_contracts/models/enums.py
+src/db_contracts/models/tasks_runs.py
