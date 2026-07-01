@@ -57,13 +57,13 @@ def upgrade() -> None:
     op.create_index(op.f('ix_dependency_analysis_task_links_analysis_run_id'), 'dependency_analysis_task_links', ['analysis_run_id'], unique=False)
     op.create_index(op.f('ix_dependency_analysis_task_links_id'), 'dependency_analysis_task_links', ['id'], unique=False)
     op.create_index(op.f('ix_dependency_analysis_task_links_task_id'), 'dependency_analysis_task_links', ['task_id'], unique=True)
-    op.drop_index(op.f('checkpoint_blobs_thread_id_idx'), table_name='checkpoint_blobs')
-    op.drop_table('checkpoint_blobs')
-    op.drop_index(op.f('checkpoints_thread_id_idx'), table_name='checkpoints')
-    op.drop_table('checkpoints')
-    op.drop_index(op.f('checkpoint_writes_thread_id_idx'), table_name='checkpoint_writes')
-    op.drop_table('checkpoint_writes')
-    op.drop_table('checkpoint_migrations')
+    op.drop_index(op.f('checkpoint_blobs_thread_id_idx'), table_name='checkpoint_blobs', if_exists=True)
+    op.drop_table('checkpoint_blobs', if_exists=True)
+    op.drop_index(op.f('checkpoints_thread_id_idx'), table_name='checkpoints', if_exists=True)
+    op.drop_table('checkpoints', if_exists=True)
+    op.drop_index(op.f('checkpoint_writes_thread_id_idx'), table_name='checkpoint_writes', if_exists=True)
+    op.drop_table('checkpoint_writes', if_exists=True)
+    op.drop_table('checkpoint_migrations', if_exists=True)
     # ### end Alembic commands ###
 
 
