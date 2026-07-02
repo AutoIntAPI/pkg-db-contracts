@@ -61,6 +61,9 @@ class API(BaseDBModel, table=True):
     request_schema: Optional[dict] = Field(default=None, sa_column=Column(JSONB))
     response_schema: Optional[dict] = Field(default=None, sa_column=Column(JSONB))
     version: Optional[str] = None
+    # Typed path-parameter metadata emitted by the endpoint-extraction AI.
+    # Schema: {"params": [{"name": str, "position": int, "type": str, "aliases": list[str]}]}
+    path_params_meta: Optional[dict] = Field(default=None, sa_column=Column(JSONB))
     service_id: UUID = Field(foreign_key="services.id")
     service: Optional["Service"] = Relationship(back_populates="apis")
     changes: list["APIChange"] = Relationship(back_populates="source_api")
